@@ -1,42 +1,58 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 
+import hambueger from "../assets/images/hambueger.png";
+
 const Header = () => {
   const merchantMetadata = useSelector((state) => state.merchantMetadata);
-  const [merchantName, setmerchantName] = useState("");
-  const [merchantLogo, setmerchantLogo] = useState("");
-  const [backgroundColor, setbackgroundColor] = useState("hsl(20, 14.3%, 4.1%)");
-  const [foregroundColor, setforegroundColor] = useState("hsl(60, 9.1%, 97.8%)");
-  const [primaryColor, setprimaryColor] = useState("hsl(47.9, 95.8%, 53.1%)");
-  const [primaryforeColor, setprimaryforeColor] = useState("hsl(26, 83.3%, 14.1%)");
-  
+  const [merchantName, setMerchantName] = useState("");
+  const [merchantLogo, setMerchantLogo] = useState("");
+  const [backgroundColor, setBackgroundColor] = useState("");
+  const [foregroundColor, setForegroundColor] = useState("");
+  const [primaryColor, setPrimaryColor] = useState("");
+  const [primaryForeColor, setPrimaryForeColor] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   useEffect(() => {
     if (merchantMetadata && merchantMetadata.data) {
-      setmerchantLogo(merchantMetadata.data.merchantLogo);
-      setmerchantName(merchantMetadata.data.merchantName);
-  
-      
+      setMerchantLogo(merchantMetadata.data.merchantLogo);
+      setMerchantName(merchantMetadata.data.merchantName);
+
       if (merchantMetadata.data.theme) {
-        setbackgroundColor(merchantMetadata.data.theme['--background'])
-        setforegroundColor(merchantMetadata.data.theme['--foreground'])
-        setprimaryColor(merchantMetadata.data.theme['--primary'])
-        setprimaryforeColor(merchantMetadata.data.theme['--primary-foreground'])
+        setBackgroundColor(merchantMetadata.data.theme['--background']);
+        setForegroundColor(merchantMetadata.data.theme['--foreground']);
+        setPrimaryColor(merchantMetadata.data.theme['--primary']);
+        setPrimaryForeColor(merchantMetadata.data.theme['--primary-foreground']);
       }
     }
   }, [merchantMetadata]);
-  
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <div style={{backgroundColor : backgroundColor}} className="flex fixed w-full items-center justify-between p-4">
+    <div style={{ backgroundColor }} className="flex fixed w-full items-center justify-between p-4">
       <div className="flex items-center">
         <img src={merchantLogo} alt="Logo" className="h-8 mr-3" />
-        <span style={{color:foregroundColor}} className="font-bold">{merchantName}</span>
+        <span style={{ color: foregroundColor }} className="font-bold">{merchantName}</span>
       </div>
-      <nav>
-        <ul className="flex space-x-4 text-black">
-          <li style={{ color: primaryColor }} className="hoverEffect transition-colors duration-150 cursor-pointer">Home</li>
-          <li style={{ color: primaryColor }} className="hoverEffect transition-colors duration-150 cursor-pointer">About</li>
-          <li style={{ color: primaryColor }} className="hoverEffect transition-colors duration-150 cursor-pointer">Services</li>
-          <li style={{ color: primaryColor }} className="hoverEffect transition-colors duration-150 cursor-pointer">Contact</li>
+      <div className="md:hidden">
+       {isMenuOpen? <div onClick={toggleMenu} className="text-white cursor-pointer absolute top-[20px] right-[23%] ">X</div> :<button onClick={toggleMenu}>
+          <img
+              className="w-[24px] h-[15px] ml-[14px]"
+              draggable="false"
+              src={hambueger}
+              alt="hamburger"
+            />
+        </button>}
+      </div>
+      <nav className={`md:block ${isMenuOpen ? "block" : "hidden"}`}>
+        <ul className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 text-black">
+          <li style={{ color: primaryColor, backgroundColor: primaryForeColor }} className="px-[20px] py-[6px] rounded-lg transition-colors duration-150 cursor-pointer">Home</li>
+          <li style={{ color: primaryColor, backgroundColor: primaryForeColor }} className="px-[20px] py-[6px] rounded-lg transition-colors duration-150 cursor-pointer">About</li>
+          <li style={{ color: primaryColor, backgroundColor: primaryForeColor }} className="px-[20px] py-[6px] rounded-lg transition-colors duration-150 cursor-pointer">Services</li>
+          <li style={{ color: primaryColor, backgroundColor: primaryForeColor }} className="px-[20px] py-[6px] rounded-lg transition-colors duration-150 cursor-pointer">Contact</li>
         </ul>
       </nav>
     </div>
