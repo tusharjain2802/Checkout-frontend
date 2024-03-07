@@ -6,11 +6,18 @@ import Loader from "./Components/Loader/Loader.jsx";
 import LoadingBar from "react-top-loading-bar";
 import AllRoutes from "./AllRoutes/AllRoutes";
 import './index.css';
+
 function App() {
   const merchantMetadata = useSelector((state) => state.merchantMetadata);
   const orderDetails = useSelector(state => state.orderDetails);
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(50);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchOrderDetails());
+    dispatch(fetchMerchantMetadata());
+  }, [dispatch]);
 
   useEffect(() => {
     const incrementProgress = () => {
@@ -30,23 +37,15 @@ function App() {
     };
   }, [loading]);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(fetchOrderDetails());
-    dispatch(fetchMerchantMetadata());
-
-    // Set up a timer to fetch data every 5 minutes
-    const intervalId = setInterval(() => {
-      dispatch(fetchOrderDetails());
-      dispatch(fetchMerchantMetadata());
-    }, 60000); // 60000 ms = 1 minutes
-
-    return () => clearInterval(intervalId);
-  }, [dispatch]);
+    if (merchantMetadata.status === 'succeeded') {
+      const bgColor = merchantMetadata.data.theme['--background'];
+      document.body.style.backgroundColor = bgColor; // Setting the background color globally
+    }
+  }, [merchantMetadata.status, merchantMetadata.data]);
 
   if (merchantMetadata.status === 'loading' || orderDetails.status === 'loading') {
-    return <div><Loader /></div>;
+    return <Loader />;
   }
   if (merchantMetadata.status === 'failed') {
     return <div>Error fetching merchant metadata: {merchantMetadata.error}</div>;
@@ -55,15 +54,16 @@ function App() {
   if (orderDetails.status === 'failed') {
     return <div>Error fetching order details: {orderDetails.error}</div>;
   }
+
   return (
     <div className="App">
-    <LoadingBar
-        color="#000000"
-        progress={progress}
-        onLoaderFinished={() => setLoading(false)}
-      />
-      
-      <AllRoutes />
+      <LoadingBar
+          color="#f11946"
+          progress={progress}
+          onLoaderFinished={() => setLoading(false)}
+        />
+        
+        <AllRoutes />
     </div>
   );
 }

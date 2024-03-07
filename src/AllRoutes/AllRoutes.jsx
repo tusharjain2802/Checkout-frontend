@@ -19,7 +19,7 @@ function AllRoutes({orderDetails, merchantMetadata}) {
         />
 
         <Route
-          path="/aboutus"
+          path="/payment"
           element={
             <PrivateLayout>
               <Payment />
@@ -28,7 +28,7 @@ function AllRoutes({orderDetails, merchantMetadata}) {
         />
 
         <Route
-          path="/aboutus"
+          path="/confirmation"
           element={
             <PrivateLayout>
               <Confirmation />
