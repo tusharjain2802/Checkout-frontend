@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 import Loading from '../assets/images/loading.gif';
+import toast from "react-hot-toast";
 
 const Pending = () => {
   const merchantMetadata = useSelector((state) => state.merchantMetadata);
+  const orderDetails = useSelector((state) => state.orderDetails);
 
   const [backgroundColor, setBackgroundColor] = useState("");
   const [foregroundColor, setForegroundColor] = useState("");
@@ -18,6 +20,19 @@ const Pending = () => {
       setPrimaryForeColor(merchantMetadata.data.theme['--primary-foreground'] || '');
     }
   }, [merchantMetadata]);
+
+  const showErrorToastMessage = (message) => {
+    toast.error(message);
+  };
+
+  useEffect(() => {
+    if (!orderDetails.name) {
+      showErrorToastMessage("Provide your details i.e. name, address before payment.");
+    }
+    else if (orderDetails.totalAmount === 0) {
+      showErrorToastMessage("Your cart is empty.");
+    }
+  }, [orderDetails.totalAmount, orderDetails.name]);
 
   return (
     <div className={`min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 md:px-10`} style={{backgroundColor: backgroundColor, color: foregroundColor}}>

@@ -62,7 +62,7 @@ const Payments = () => {
     e.preventDefault();
     dispatch(setName(userName));
     dispatch(setAddress(userAddress));
-    const routes = [ '/confirmation'];
+    const routes = ['/pending', '/confirmation', '/failed'];
     const randomRoute = routes[Math.floor(Math.random() * routes.length)];
     navigate(randomRoute);
   };

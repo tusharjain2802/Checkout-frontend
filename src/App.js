@@ -5,6 +5,7 @@ import { fetchMerchantMetadata } from './store/slices/merchantMetadataSlice';
 import Loader from "./Components/Loader/Loader.jsx";
 import LoadingBar from "react-top-loading-bar";
 import AllRoutes from "./AllRoutes/AllRoutes";
+import { Toaster } from "react-hot-toast";
 import './index.css';
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
         />
         
         <AllRoutes />
+        <Toaster />
     </div>
   );
 }

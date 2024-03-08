@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from 'react-redux';
 
 import hambueger from "../assets/images/hambueger.png";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const merchantMetadata = useSelector((state) => state.merchantMetadata);
@@ -34,8 +35,8 @@ const Header = () => {
   return (
     <div style={{ backgroundColor }} className="flex fixed w-full items-center justify-between p-4">
       <div className="flex items-center">
-        <img src={merchantLogo} alt="Logo" className="h-8 mr-3" />
-        <span style={{ color: foregroundColor }} className="font-bold">{merchantName}</span>
+      <Link to="/"><img src={merchantLogo} alt="Logo" className="h-8 mr-3" /></Link>
+        <Link to="/"><span style={{ color: foregroundColor }} className="font-bold">{merchantName}</span></Link>
       </div>
       <div className="md:hidden">
        {isMenuOpen? <div onClick={toggleMenu} className="text-white cursor-pointer absolute top-[20px] right-[23%] ">X</div> :<button onClick={toggleMenu}>
