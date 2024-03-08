@@ -4,8 +4,10 @@ import PrivateLayout from "../Layout/PrivateLayout";
 import Cart from "../Pages/Cart";
 import Confirmation from "../Pages/Confirmation";
 import Payment from "../Pages/Payment";
+import Pending from "../Pages/Pending";
+import Failed from "../Pages/Failed";
 
-function AllRoutes({orderDetails, merchantMetadata}) {
+function AllRoutes({ orderDetails, merchantMetadata }) {
   return (
     <div>
       <Routes>
@@ -32,6 +34,22 @@ function AllRoutes({orderDetails, merchantMetadata}) {
           element={
             <PrivateLayout>
               <Confirmation />
+            </PrivateLayout>
+          }
+        />
+        <Route
+          path="/pending"
+          element={
+            <PrivateLayout>
+              <Pending />
+            </PrivateLayout>
+          }
+        />
+        <Route
+          path="/failed"
+          element={
+            <PrivateLayout>
+              <Failed />
             </PrivateLayout>
           }
         />
