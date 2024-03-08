@@ -16,8 +16,22 @@ export const orderDetailsSlice = createSlice({
     data: [],
     status: 'idle', 
     error: null,
+    name: '',
+    address: '',
+    totalAmount: 0,
   },
-  reducers: {},
+  reducers: {
+    setName: (state, action) => {
+      state.name = action.payload;
+    },
+    
+    setAddress: (state, action) => {
+      state.address = action.payload;
+    },
+    setTotalAmount: (state, action) => {
+      state.totalAmount = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchOrderDetails.pending, (state) => {
@@ -33,5 +47,7 @@ export const orderDetailsSlice = createSlice({
       });
   },
 });
+
+export const { setName, setAddress, setTotalAmount } = orderDetailsSlice.actions;
 
 export default orderDetailsSlice.reducer;

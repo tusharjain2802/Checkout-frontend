@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
+import { setTotalAmount } from '../store/slices/orderDetailsSlice';
 import noData from "../assets/images/noData.png";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const Cart = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const orderDetails = useSelector((state) => state.orderDetails);
   const products = orderDetails.data.products || [];
   const merchantMetadata = useSelector((state) => state.merchantMetadata);
 
   const [backgroundColor, setBackgroundColor] = useState("");
+  const [total, setTotal] = useState(0);
   const [foregroundColor, setForegroundColor] = useState("");
   const [primaryColor, setPrimaryColor] = useState("");
   const [primaryForeColor, setPrimaryForeColor] = useState("");
@@ -26,8 +30,21 @@ const Cart = () => {
 
   const orderTotal = products.reduce((total, product) => total + product.price * product.quantity, 0);
 
+  useEffect(() => {
+    setTotal(orderTotal);
+  }, [orderTotal]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(setTotalAmount(total));
+    navigate("/payment")    
+  }; 
+
+  
+
   return (
-    <div style={{ backgroundColor: backgroundColor, color: foregroundColor }} className="px-4 sm:px-6 md:px-10 py-[100px]  min-h-screen">
+    <div style={{ backgroundColor: backgroundColor, color: foregroundColor }} className="px-4 sm:px-6 md:px-10 pt-[100px] pb-[300px]  min-h-screen">
+     <form>
       <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6" style={{ color: primaryColor }}>Your Cart</h2>
       {products.length === 0 ? (
         <div className="flex flex-col justify-center items-center h-full text-center">
@@ -55,10 +72,11 @@ const Cart = () => {
             <span className="font-bold text-xl md:text-2xl">₹{orderTotal.toFixed(2)}</span>
           </div>
           {showPaymentButton && (
-           <Link to="/payment"> <button className="w-full mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200 ease-in-out" style={{ backgroundColor: primaryColor }}>Proceed to Payment</button></Link>
+           <button onClick={handleSubmit} type="submit" className="w-full mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors duration-200 ease-in-out" style={{ backgroundColor: primaryColor }}>Proceed to Payment</button>
           )}
         </>
       )}
+      </form>
     </div>
   );
 };
