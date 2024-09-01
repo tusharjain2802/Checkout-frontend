@@ -1,4 +1,4 @@
-# GrowwFrontEndAssign
+# CheckoutFrontEndA
 E-commerce Check Out FrontEnd
 
 ### Functioning
