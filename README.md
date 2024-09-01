@@ -1,4 +1,4 @@
-# CheckoutFrontEndA
+# CheckoutFrontEnd
 E-commerce Check Out FrontEnd
 
 ### Functioning
